@@ -23,7 +23,18 @@ if "file_id_list" not in st.session_state:
 # Set up the Streamlit page with a title and icon
 st.set_page_config(page_title="ChatGPT-like Chat App", page_icon=":speech_balloon:")
 
+full_response = ""
+# The full_response_completed variable is to control if the second submit button is shown or not.
+if "full_response_completed" not in st.session_state:
+    st.session_state.full_response_completed = False
 
+
+# The full_response_completed variable is to control if the second submit button is shown or not.
+if "full_response" not in st.session_state:
+    st.session_state.full_response = ""
+    
+    
+    
 # Function to associate files with the assistant
 def associate_files_with_assistant(file_ids, assistant_id):
     for file_id in file_ids:
@@ -83,17 +94,6 @@ if st.sidebar.button("Upload File"):
         # Associate the new file with the assistant
         associate_files_with_assistant([additional_file_id], assistant_id)
 
-# Display all file IDs
-if st.session_state.file_id_list:
-    st.sidebar.write("Uploaded File IDs:")
-    for file_id in st.session_state.file_id_list:
-        st.sidebar.write(file_id)
-        # Associate files with the assistant
-        assistant_file = openai.beta.assistants.files.create(
-            assistant_id=assistant_id, 
-            file_id=file_id
-        )
-        print(assistant_file)
 
 # Main chat interface setup
 st.title("OpenAI Assistants API Chat")
@@ -116,7 +116,7 @@ company_description = st.text_input("What does your company do")
 innovation_details = st.text_area("State the innovation")
 
 # Add a submit button
-submit_button = st.button("Submit")
+submit_button = st.button("AI Summary-Start")
 
 # Check if either of the inputs is provided
 if submit_button and (company_description or innovation_details):
@@ -155,7 +155,8 @@ if submit_button and (company_description or innovation_details):
         Qu7 : Please provide a list of the competent professionals involved in the project, including their qualifications, experience and what work they did for the project
 """
         )
-
+    print("The assistant id is: ", assistant_id)
+    print("The thread id is: ", st.session_state.thread_id)
     # Poll for the run to complete and retrieve the assistant's messages
     while run.status != 'completed':
         time.sleep(1)
@@ -163,7 +164,9 @@ if submit_button and (company_description or innovation_details):
             thread_id=st.session_state.thread_id,
             run_id=run.id
         )
-
+        print("The run status is: ", run.status)
+        print("The run id is: ", run.id)
+    print("checking     1")     
     # Retrieve messages added by the assistant
     messages = openai.beta.threads.messages.list(
         thread_id=st.session_state.thread_id
@@ -174,21 +177,35 @@ if submit_button and (company_description or innovation_details):
         message for message in messages 
         if message.run_id == run.id and message.role == "assistant"
     ]
+    print("program reached print")
     for message in assistant_messages_for_run:
         full_response = process_message_with_citations(message)
         st.session_state.messages.append({"role": "assistant", "constent": full_response})
-        #st.write(full_response)
+        # Indicate that the initial process has been completed
+        st.session_state.full_response = full_response
+        st.session_state.full_response_completed = True
+        print('message is:', message)
     #print(full_response)
+    st.write(st.session_state.full_response)
+    print("Program reached end")
     
-    summary_response = technology_summary.summary(full_response)
-    st.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    #st.write(summary_response)
-    final_response=test.hmrc_randd_qu(summary_response)
-    for key, value in final_response.items():
-        st.write(value)
-        st.write("*************")
-        print(value)
-        print("******************")
+    
+if st.session_state.full_response_completed:
+    if st.button("Full Response-Start"):
+        st.write(st.session_state.full_response)
+        # Reset the process completion state if needed or start the next part of your application
+        st.session_state.full_response_completed = False
+        # You can add your logic here for what happens when the "Start" button is pressed
+
+        summary_response = technology_summary.summary(st.session_state.full_response)
+        st.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        st.write(summary_response)  
+        final_response=test.hmrc_randd_qu(summary_response)
+        for key, value in final_response.items():
+            st.write(value)
+            st.write("*************")
+            print(value)
+            print("******************")
 
 else:
     # Prompt to start the chat
