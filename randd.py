@@ -207,6 +207,12 @@ if st.session_state.full_response_completed:
             print(value)
             print("******************")
 
+        for file_id in file_ids:
+            client.files.delete(
+            file_id=file_id
+        )
+
+
 else:
     # Prompt to start the chat
     st.write("Please upload files and click 'Start Chat' to begin the conversation.")
