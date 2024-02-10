@@ -43,7 +43,7 @@ def associate_files_with_assistant(file_ids, assistant_id):
             file_id=file_id
             
         )
-        print(file_id)
+        print(type(file_ids))
         print(assistant_id)
 
 # Define the function to process messages with citations
@@ -207,10 +207,14 @@ if st.session_state.full_response_completed:
             print(value)
             print("******************")
 
-        for file_id in file_ids:
-            client.files.delete(
-            file_id=file_id
-        )
+        # At the end of your Streamlit app, where you want to delete the uploaded files
+        if st.session_state.file_id_list:  # Check if there are any file IDs to delete
+            for file_id in st.session_state.file_id_list:
+                try:
+                    openai.File.delete(file_id=file_id)  # Use openai.File.delete to delete the file
+                    st.write(f"Deleted file ID: {file_id}")  # Optional: Confirm deletion in the app
+                except Exception as e:
+                    st.error(f"Error deleting file ID {file_id}: {e}")  # Handle exceptions
 
 
 else:

@@ -31,8 +31,14 @@ def hmrc_randd_qu(full_response):
                 ]
             )
             # Update the value of the key with the response
-            question_dict[key] = response.choices[0].message.content
+            #question_dict[key] = response.choices[0].message.content
             #print(question_dict[key])
+            
+            # Extract the answer from the response
+            answer = response.choices[0].message.content
+            
+            # Update the dictionary to store both the question and its answer
+            question_dict[key] = {"Question": key, "Answer": answer}
             
         except Exception as e:
             print(f"Error occurred for key {key}: {e}")
