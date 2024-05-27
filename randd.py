@@ -96,12 +96,12 @@ if st.sidebar.button("Upload File"):
 
 
 # Main chat interface setup
-st.title("OpenAI Assistants API Chat")
-st.write("This is a simple chat application that uses OpenAI's API to generate responses.")
+st.title("macaws R&D Assistant")
+st.write("Speedup R&D application.")
 
 
 if "openai_model" not in st.session_state:
-    st.session_state.openai_model = "gpt-4-1106-preview"
+    st.session_state.openai_model = "gpt-4o"
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
