@@ -7,6 +7,6 @@ assistant_id = 'asst_ct2tGsfN0xrDG3RzTCaeoa6M'
 openai.api_key = config("OPENAI_API_KEY")  # Use config to get the API key
 
 if "openai_model" not in st.session_state:
-    st.session_state.openai_model = "gpt-4-1106-preview"
+    st.session_state.openai_model = "gpt-4o"
     
     
