@@ -8,6 +8,6 @@ openai = OpenAI(default_headers={"OpenAI-Beta": "assistants=v1"})
 openai.api_key = config("OPENAI_API_KEY")  # Use config to get the API key
 
 if "openai_model" not in st.session_state:
-    st.session_state.openai_model = "gpt-4-1106-preview"
+    st.session_state.openai_model = "gpt-4-turbo"
     
     
