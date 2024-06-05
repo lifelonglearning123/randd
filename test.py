@@ -1,4 +1,4 @@
-from openai import OpenAI
+from openai
 from decouple import config  # Import config from decouple
 openai = OpenAI(default_headers={"OpenAI-Beta": "assistants=v1"})
 openai.api_key = config("OPENAI_API_KEY")  # Use config to get the API key
@@ -23,7 +23,7 @@ def hmrc_randd_qu(full_response):
         #print(value)
         try:
             response = openai.chat.completions.create(
-                model="gpt-4-turbo", 
+                model="gpt-4o", 
                 messages=[
                     {   "role": "system",
                     "content" : "You are a R&D grant writer. Your audience is HMRC. You need to write a report to HMRC based on the information provided. Just answer the question and don't write an introduction or conclusion",
