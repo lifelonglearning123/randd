@@ -6,6 +6,8 @@ import time
 from decouple import config  # Import config from decouple
 import test
 import technology_summary
+import os
+from dotenv import load_dotenv
 
 # Set your OpenAI Assistant ID here
 assistant_id = 'asst_ct2tGsfN0xrDG3RzTCaeoa6M'
@@ -13,7 +15,7 @@ assistant_id = 'asst_ct2tGsfN0xrDG3RzTCaeoa6M'
 openai = OpenAI(default_headers={"OpenAI-Beta": "assistants=v1"})
 
 # Initialize the OpenAI client (ensure to set your API key in the sidebar within the app)
-openai.api_key = config("OPENAI_API_KEY")  # Use config to get the API key
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Initialize session state variables for file IDs and chat control
 
