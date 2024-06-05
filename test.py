@@ -1,6 +1,8 @@
 import openai
 from decouple import config  # Import config from decouple
+openai = OpenAI(default_headers={"OpenAI-Beta": "assistants=v1"})
 openai.api_key = config("OPENAI_API_KEY")  # Use config to get the API key
+
 
 def hmrc_randd_qu(full_response):
     question_dict = {
