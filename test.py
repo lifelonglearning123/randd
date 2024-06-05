@@ -23,7 +23,7 @@ def hmrc_randd_qu(full_response):
         #print(value)
         try:
             response = openai.chat.completions.create(
-                model="gpt-4-1106-preview", 
+                model="gpt-4-turbo", 
                 messages=[
                     {   "role": "system",
                     "content" : "You are a R&D grant writer. Your audience is HMRC. You need to write a report to HMRC based on the information provided. Just answer the question and don't write an introduction or conclusion",
