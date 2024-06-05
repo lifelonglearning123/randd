@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 from decouple import config  # Import config from decouple
 openai = OpenAI(default_headers={"OpenAI-Beta": "assistants=v1"})
 
