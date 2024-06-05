@@ -1,6 +1,6 @@
-import openai
+from openai import OpenAI
 from decouple import config  # Import config from decouple
-openai = openai(default_headers={"OpenAI-Beta": "assistants=v1"})
+openai = OpenAI(default_headers={"OpenAI-Beta": "assistants=v1"})
 openai.api_key = config("OPENAI_API_KEY")  # Use config to get the API key
 
 def summary(full_response):
